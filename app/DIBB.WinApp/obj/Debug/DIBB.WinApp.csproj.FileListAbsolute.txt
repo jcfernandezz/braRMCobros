@@ -1,0 +1,33 @@
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\DIBB.WinApp.exe.config
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.csprojResolveAssemblyReference.cache
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.Form1.resources
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.Properties.Resources.resources
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.csproj.GenerateResource.Cache
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\DIBB.WinApp.exe
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\DIBB.WinApp.pdb
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\Excel.dll
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\Microsoft.Dynamics.GP.eConnect.dll
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\Microsoft.Dynamics.GP.eConnect.Serialization.dll
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\Excel.pdb
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.exe
+C:\Desarrollo\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.pdb
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\DIBB.WinApp.exe.config
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.exe
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.pdb
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\DIBB.WinApp.exe
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\DIBB.WinApp.pdb
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\Excel.dll
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\Excel.pdb
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.Form1.resources
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.Properties.Resources.resources
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.csproj.GenerateResource.Cache
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.csprojResolveAssemblyReference.cache
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\EntityFramework.dll
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\EntityFramework.SqlServer.dll
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\EntityFramework.xml
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\EntityFramework.SqlServer.xml
+C:\jcTii\Desarrollo\BRA_LocalizacionBase\E. Implementation\RM 03BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Debug\DIBB.WinApp.exe.config
+C:\jcTii\Desarrollo\BRA_LocalizacionBase\E. Implementation\RM 03BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.exe
+C:\jcTii\Desarrollo\BRA_LocalizacionBase\E. Implementation\RM 03BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Debug\DIBB.WinApp.pdb

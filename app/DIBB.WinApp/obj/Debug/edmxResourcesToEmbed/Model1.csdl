@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GBRAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="GBRAEntities" annotation:LazyLoadingEnabled="true">
+    <FunctionImport Name="dibb_spCollectionOfBankSlips_insUpd">
+      <Parameter Name="DOCNUMBR" Mode="In" Type="String" />
+      <Parameter Name="archivo" Mode="In" Type="String" />
+      <Parameter Name="usuario" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+</Schema>
