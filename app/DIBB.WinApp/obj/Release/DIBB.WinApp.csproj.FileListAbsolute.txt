@@ -1,0 +1,15 @@
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Release\DIBB.WinApp.exe.config
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Release\DIBB.WinApp.exe
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Release\DIBB.WinApp.pdb
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Release\EntityFramework.dll
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Release\EntityFramework.SqlServer.dll
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Release\Excel.dll
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Release\ICSharpCode.SharpZipLib.dll
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Release\EntityFramework.xml
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Release\EntityFramework.SqlServer.xml
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\bin\Release\Excel.pdb
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Release\DIBB.WinApp.Form1.resources
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Release\DIBB.WinApp.Properties.Resources.resources
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Release\DIBB.WinApp.csproj.GenerateResource.Cache
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Release\DIBB.WinApp.exe
+C:\GettyBRA\E. Implementation\BraIntegraCobros\trunk\src\BraIntegraCobros\DIBB.WinApp\obj\Release\DIBB.WinApp.pdb
