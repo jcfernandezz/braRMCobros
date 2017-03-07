@@ -26,6 +26,7 @@ namespace DIBB.WinApp.Business
         private string _custnmbr = String.Empty;
         private string _docnmbr = String.Empty;
         private Decimal _amount = 0;
+        private Parametros _param;
 
         BackgroundWorker backgroundWorker = new BackgroundWorker();
         int cantidad = 0;
@@ -36,7 +37,7 @@ namespace DIBB.WinApp.Business
         {
             connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[pre].ToString();
             _pre = pre;
-
+            _param = new Parametros(_pre);
             InitializeBackgroundWorker();
         }
 
@@ -203,7 +204,7 @@ namespace DIBB.WinApp.Business
             {
                 mensajeOk = "";
                 mensajeError = "";
-                DateTime fechaCobro = dato.FechaTotalLiquidado.AddDays(1);
+                DateTime fechaCobro = dato.FechaTotalLiquidado.AddDays(_param.FechaTotalLiquidadoAddDays);
 
                 using (eConnectMethods eConnectMethods = new eConnectMethods())
                 {

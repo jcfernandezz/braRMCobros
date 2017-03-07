@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using DIBB.WinApp.Model;
 using System.IO;
 using Excel;
+using System.Diagnostics;
 
 namespace DIBB.WinApp
 {
@@ -42,40 +43,63 @@ namespace DIBB.WinApp
             openFileDialog1.ReadOnlyChecked = true;
             openFileDialog1.ShowReadOnly = true;
 
+            Stream outputFile = File.Create(@"C:\gpusuario\traceCargaCobros.txt");
+            TextWriterTraceListener textListener = new TextWriterTraceListener(outputFile);
+            TraceSource trace = new TraceSource("trSource", SourceLevels.All);
+
             try
             {
+                trace.Listeners.Clear();
+                trace.Listeners.Add(textListener);
+                trace.TraceInformation("Carga cobros");
+
+                Business.Parametros param = new Business.Parametros(companySelected());
+                trace.TraceInformation("Inicializa parámetros");
+
                 if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     string archivo = openFileDialog1.FileName;
 
                     // Get the file we are going to process
                     var ds = LeerExcelDataReader(archivo);
+                    trace.TraceInformation("leer excel data reader");
 
                     LstDatos lst = new LstDatos();
                     lst.Informacion = new List<Datos>();
 
-                    string[] aux = ds.Tables[0].Rows[9][0].ToString().Split(':');
-                    DateTime fechaTotalLiquidado = DateTime.Parse(aux[1].ToString().Trim());
+                    //string[] aux = ds.Tables[0].Rows[param.FechaFila][param.FechaCol].ToString().Split(':');
+                    //DateTime fechaTotalLiquidado = DateTime.Parse(aux[0].ToString().Trim());
 
                     lblProcesos.Text = "Opening " + archivo + Environment.NewLine;
                     lblError.Text = "Opening " + archivo + Environment.NewLine;
 
-                    for (int i = 14; i < ds.Tables[0].Rows.Count; i++)
+                    for (int i = param.IniciaDatosFila; i < ds.Tables[0].Rows.Count; i++)
                     {
-
                         if (ds.Tables[0].Rows[i].ItemArray.GetValue(0).ToString() != string.Empty)
                         {
                             Datos d = new Datos();
-                            d.NumeroCobro = long.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(0).ToString().Trim());
-                            d.NumeroFactura = ds.Tables[0].Rows[i].ItemArray.GetValue(1).ToString().Trim();
-                            d.CodigoLiquidacion = int.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(2).ToString().Trim());
-                            d.FechaVencimientoPago = DateTime.FromOADate(double.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(3).ToString()));
-                            d.ValorBoleto = decimal.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(4).ToString().Trim());
-                            d.Juros = decimal.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(5).ToString().Trim());
-                            d.Abatimento = decimal.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(6).ToString().Trim());
-                            d.ValorPago = decimal.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(7).ToString().Trim());
-                            d.NombrePagador = ds.Tables[0].Rows[i].ItemArray.GetValue(8).ToString();
-                            d.FechaTotalLiquidado = fechaTotalLiquidado;
+                            trace.TraceInformation("fila: " + i.ToString() + " col NumeroCobroCol:" + param.NumeroCobroCol.ToString());
+                            d.NumeroCobro = long.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(param.NumeroCobroCol).ToString().Trim());
+                            trace.TraceInformation("fila: " + i.ToString() + " col NumeroFacturaCol:" + param.NumeroFacturaCol.ToString());
+                            d.NumeroFactura = ds.Tables[0].Rows[i].ItemArray.GetValue(param.NumeroFacturaCol).ToString().Trim();
+                            trace.TraceInformation("fila: " + i.ToString() + " col CodigoLiquidacionCol:" + param.CodigoLiquidacionCol.ToString());
+                            //d.CodigoLiquidacion = int.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(param.CodigoLiquidacionCol).ToString().Trim());
+                            d.CodigoLiquidacion = 0;
+                            trace.TraceInformation("fila: " + i.ToString() + " col FechaVencimientoPago:" + param.FechaVencimientoPagoCol.ToString());
+                            d.FechaVencimientoPago = DateTime.FromOADate(double.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(param.FechaVencimientoPagoCol).ToString()));
+                            trace.TraceInformation("fila: " + i.ToString() + " col ValorBoletoCol:" + param.ValorBoletoCol.ToString());
+                            d.ValorBoleto = decimal.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(param.ValorBoletoCol).ToString().Trim());
+                            trace.TraceInformation("fila: " + i.ToString() + " col JurosCol:" + param.JurosCol.ToString() + " " + ds.Tables[0].Rows[i].ItemArray.GetValue(param.JurosCol).ToString());
+
+                            d.Juros = ds.Tables[0].Rows[i].ItemArray.GetValue(param.JurosCol) == null || ds.Tables[0].Rows[i].ItemArray.GetValue(param.JurosCol).ToString().Trim().Equals(String.Empty) ? 0 : decimal.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(param.JurosCol).ToString().Trim());
+                            trace.TraceInformation("fila: " + i.ToString() + " col AbatimentoCol:" + param.AbatimentoCol.ToString());
+                            d.Abatimento = ds.Tables[0].Rows[i].ItemArray.GetValue(param.AbatimentoCol) == null || ds.Tables[0].Rows[i].ItemArray.GetValue(param.AbatimentoCol).ToString().Trim().Equals(String.Empty) ? 0 : decimal.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(param.AbatimentoCol).ToString().Trim());
+                            trace.TraceInformation("fila: " + i.ToString() + " col ValorPagoCol:" + param.ValorPagoCol.ToString());
+                            d.ValorPago = decimal.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(param.ValorPagoCol).ToString().Trim());
+                            trace.TraceInformation("fila: " + i.ToString() + " col NombrePagadorCol:" + param.NombrePagadorCol.ToString());
+                            d.NombrePagador = ds.Tables[0].Rows[i].ItemArray.GetValue(param.NombrePagadorCol).ToString();
+                            trace.TraceInformation("fila: " + i.ToString() + " col FechaTotalLiquidadoCol:" + param.FechaTotalLiquidadoCol.ToString());
+                            d.FechaTotalLiquidado = DateTime.FromOADate(double.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(param.FechaTotalLiquidadoCol).ToString()));
                             lst.Informacion.Add(d);
 
                             using (var context = new GBRAEntities())
@@ -100,7 +124,12 @@ namespace DIBB.WinApp
             }
             catch (Exception of)
             {
-                lblError.Text += "Error. Please check the file and the following message: (Form1.button1_Click) " + of.Message + Environment.NewLine;
+                lblError.Text += "Exception. Please check the file and the following message: " + of.Message + " (Form1.button1_Click) " + of.TargetSite.ToString() + Environment.NewLine;
+            }
+            finally
+            {
+                trace.Flush();
+                trace.Close();
             }
         }
 
