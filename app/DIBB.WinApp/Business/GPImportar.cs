@@ -219,7 +219,9 @@ namespace DIBB.WinApp.Business
                         RMCashReceiptsType RMCashReceiptsTypeEntry = new RMCashReceiptsType();
 
                         taRMCashReceiptInsert CashReceiptItem = new taRMCashReceiptInsert();
-                        this.getCustnmbrDocnumbr(dato.NumeroFactura.Substring(0, 7), dato.FechaVencimientoPago);
+                        //el número de la planilla puede venir así: B-10201, B-10201., B-10201 01, B-10201. 01
+                        string numFactura = dato.NumeroFactura.Trim().Length > 7 ? dato.NumeroFactura.Substring(0, 8) : dato.NumeroFactura.Substring(0, 7);
+                        this.getCustnmbrDocnumbr(numFactura.Trim(), dato.FechaVencimientoPago);
 
                         CashReceiptItem.CUSTNMBR = _custnmbr;   // this.getCustnmbr(dato.NumeroFactura);
                         CashReceiptItem.DOCNUMBR = "RB" + dato.NumeroCobro;
