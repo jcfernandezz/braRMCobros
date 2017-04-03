@@ -11,7 +11,8 @@ create view dbo.vwLocBraRmFacturasYBolBancarios as
 --			RMGeneraBoletoBancarioParaIntegra.SqlScripts
 --			RMActualizaAgenciaAlGenerarBoletoBancario
 --Utilizado por. Carga de cobro de boletos bancarios
---12/1/16 jcf Creación
+--12/01/16 jcf Creación
+--03/04/17 jcf Filtra XRM_SCH_POSTING, está incluido en vwLocBraBoletosBancarios
 --
 select trx.Inv_Date, trx.Amount, trx.totalDoc,
 	trx.inv_no,	
@@ -51,7 +52,7 @@ where not exists(
 		and rv.docnumbr = trx.docnumbr
 		and rv.rmdtypal = trx.rmdtypal
 	)
-and trx.bchsourc != 'XRM_Sales'			-- XRM_Sales: scheduled instalments	
+and trx.bchsourc not in ('XRM_Sales', 'XRM_SCH_POSTING')			-- XRM_Sales: scheduled instalments; scheduled posting
 and trx.rmdtypal = 1
 and trx.voidstts = 0
 
