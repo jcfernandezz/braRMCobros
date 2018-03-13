@@ -8,7 +8,7 @@ namespace DIBB.WinApp.Business
 {
     public interface IBandejaXLCobros : IBandejaXL
     {
-        void ProcesaBandeja(Model.BoletosBrasil cobros);
+        void ProcesaBandeja(Model.BoletosBrasil cobros, Bandeja.TargetGP destino);
 
         event EventHandler<ErrorIntegracionEventArgs> EventoErrorIntegracion;
 

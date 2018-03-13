@@ -19,10 +19,10 @@ namespace DIBB.WinApp.Business
     public class BandejaXLIntegraCobrosBoletos : BandejaXL, IBandejaXLCobros
     {
         Model.IParametrosCobrosBoletosXL parametrosCobrosXL;
-        BackgroundWorker backgroundWorker = new BackgroundWorker();
+        BackgroundWorker backgroundWorker;
         Model.BoletosBrasil _cobros;
         int cantidad = 0;
-
+        
         #region Eventos
         public event EventHandler<ErrorIntegracionEventArgs> EventoErrorIntegracion;
 
@@ -52,20 +52,33 @@ namespace DIBB.WinApp.Business
         public BandejaXLIntegraCobrosBoletos(Model.IParametrosCobrosBoletosXL param)
         {
             parametrosCobrosXL = param;
-            InitializeBackgroundWorker();
 
         }
 
-        public void ProcesaBandeja(Model.BoletosBrasil cobros)
+        public void ProcesaBandeja(Model.BoletosBrasil cobros, TargetGP target)
         {
-            _cobros = cobros;
-
-            backgroundWorker.RunWorkerAsync();
+            switch (target)
+            {
+                case TargetGP.RMCobro:
+                    _cobros = cobros;
+                    InitializeBackgroundWorker();
+                    backgroundWorker.RunWorkerAsync();
+                    break;
+                case TargetGP.RMNotaCredito:
+                    throw new InvalidOperationException("No se puede integrar a GP porque no está implementado el destino: " + target.ToString());
+                //_cobros = cobros;
+                //InitializeBackgroundWorker();
+                //backgroundWorker.RunWorkerAsync();
+                //break;
+                default:
+                    throw new InvalidOperationException("No se puede integrar a GP porque no está implementado el destino: "+target.ToString() + " [BandejaXLIntegraCobrosBoletos.ProcesaBandeja]");
+            }
         }
 
 
         private void InitializeBackgroundWorker()
         {
+            backgroundWorker = new BackgroundWorker();
             backgroundWorker.WorkerReportsProgress = true;
             backgroundWorker.WorkerSupportsCancellation = true;
 

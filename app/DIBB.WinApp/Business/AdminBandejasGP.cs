@@ -15,6 +15,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
 using System.ComponentModel;
+using DIBB.WinApp.Model;
 
 namespace DIBB.WinApp.Business
 {
@@ -33,6 +34,19 @@ namespace DIBB.WinApp.Business
             set
             {
                 integraCobrosXL = value;
+            }
+        }
+
+        public IParametrosCobrosBoletosXL ParamCobros
+        {
+            get
+            {
+                return paramCobros;
+            }
+
+            set
+            {
+                paramCobros = value;
             }
         }
 
@@ -97,11 +111,9 @@ namespace DIBB.WinApp.Business
             }
         }
 
-        public void ProcesaBandejaXL(Model.BoletosBrasil cobros)
+        public void ProcesaBandejaXL(Model.BoletosBrasil cobros, Bandeja.TargetGP destinoGP)
         {
-            integraCobrosXL.ProcesaBandeja(cobros);
+            integraCobrosXL.ProcesaBandeja(cobros, destinoGP);
         }
-
-
     }
 }

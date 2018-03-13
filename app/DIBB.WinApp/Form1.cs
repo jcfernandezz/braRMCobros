@@ -119,7 +119,14 @@ namespace DIBB.WinApp
                     bandeja.IntegraCobrosXL.EventoErrorIntegracion += new EventHandler<Business.ErrorIntegracionEventArgs>(ErroresAlImportar);
                     bandeja.IntegraCobrosXL.EventoAlertaIntegracion += new EventHandler<Business.AlertaIntegracionEventArgs>(Alertas);
 
-                    bandeja.ProcesaBandejaXL(lst);
+                    bandeja.ProcesaBandejaXL(lst, Business.Bandeja.TargetGP.RMCobro);
+
+                    if (cbTipoArchivo.SelectedIndex==1)
+                    {
+                        param.NumeroCobroCol -= 1;
+                        bandeja.ProcesaBandejaXL(lst, Business.Bandeja.TargetGP.RMNotaCredito);
+                    }
+
                 }
 
             }
@@ -190,11 +197,7 @@ namespace DIBB.WinApp
             cmbEmpresas.SelectedIndex = 0;
             lblUsuario.Text = Environment.UserDomainName + "\\" + Environment.UserName;
             lblFecha.Text = DateTime.Now.ToString("dd/MM/yyyy");
-        }
-
-        private void versión10ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
+            cbTipoArchivo.SelectedIndex = 0;
         }
 
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)

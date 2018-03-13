@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DIBB.WinApp.Business
 {
-    public class BandejaXL : Bandeja, IBandejaXL
+    public abstract class Bandeja
     {
+        public enum TargetGP { RMCobro, RMNotaCredito};
     }
 }

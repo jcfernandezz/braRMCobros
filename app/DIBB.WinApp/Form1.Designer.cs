@@ -49,6 +49,7 @@
             this.lblProcesos = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
+            this.cbTipoArchivo = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource3)).BeginInit();
@@ -151,8 +152,8 @@
             // versión10ToolStripMenuItem
             // 
             this.versión10ToolStripMenuItem.Name = "versión10ToolStripMenuItem";
-            this.versión10ToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.versión10ToolStripMenuItem.Text = "Versión 2.0";
+            this.versión10ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.versión10ToolStripMenuItem.Text = "Versión 3.0.0";
             // 
             // lblError
             // 
@@ -211,6 +212,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.cbTipoArchivo);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
@@ -222,12 +224,24 @@
             // 
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Image = global::DIBB.WinApp.Properties.Resources.transfer;
-            this.button1.Location = new System.Drawing.Point(11, 33);
+            this.button1.Location = new System.Drawing.Point(159, 33);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(44, 43);
             this.button1.TabIndex = 0;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // cbTipoArchivo
+            // 
+            this.cbTipoArchivo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTipoArchivo.FormattingEnabled = true;
+            this.cbTipoArchivo.Items.AddRange(new object[] {
+            "Boletos",
+            "Tarjeta de crédito"});
+            this.cbTipoArchivo.Location = new System.Drawing.Point(9, 33);
+            this.cbTipoArchivo.Name = "cbTipoArchivo";
+            this.cbTipoArchivo.Size = new System.Drawing.Size(144, 21);
+            this.cbTipoArchivo.TabIndex = 2;
             // 
             // Form1
             // 
@@ -278,6 +292,7 @@
         private System.Windows.Forms.TextBox lblProcesos;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox cbTipoArchivo;
     }
 }
 

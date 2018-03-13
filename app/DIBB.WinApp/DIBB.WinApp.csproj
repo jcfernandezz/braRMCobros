@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Business\AdminBandejasGP.cs" />
     <Compile Include="Business\AlertaIntegracionEventArgs.cs" />
+    <Compile Include="Business\Bandeja.cs" />
     <Compile Include="Business\BandejaXL.cs" />
     <Compile Include="Business\BandejaXLIntegraCobros.cs" />
     <Compile Include="Business\ErrorIntegracionEventArgs.cs" />
