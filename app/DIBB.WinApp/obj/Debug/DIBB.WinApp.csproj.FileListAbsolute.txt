@@ -49,3 +49,6 @@ C:\jcTii\Desarrollo\BRA_LocalizacionBase\braRMCobros\app\DIBB.WinApp\bin\Debug\M
 C:\jcTii\Desarrollo\BRA_LocalizacionBase\braRMCobros\app\DIBB.WinApp\bin\Debug\EntityFramework.xml
 C:\jcTii\Desarrollo\BRA_LocalizacionBase\braRMCobros\app\DIBB.WinApp\bin\Debug\EntityFramework.SqlServer.xml
 C:\jcTii\Desarrollo\BRA_LocalizacionBase\braRMCobros\app\DIBB.WinApp\bin\Debug\Excel.pdb
+C:\jcTii\Desarrollo\BRA_LocBase\braRMCobros\app\DIBB.WinApp\bin\Debug\DIBB.WinApp.exe.config
+C:\jcTii\Desarrollo\BRA_LocBase\braRMCobros\app\DIBB.WinApp\obj\Debug\DIBB.WinApp.exe
+C:\jcTii\Desarrollo\BRA_LocBase\braRMCobros\app\DIBB.WinApp\obj\Debug\DIBB.WinApp.pdb

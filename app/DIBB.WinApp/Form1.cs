@@ -64,8 +64,8 @@ namespace DIBB.WinApp
                     var ds = LeerExcelDataReader(archivo);
                     trace.TraceInformation("leer excel data reader");
 
-                    LstDatos lst = new LstDatos();
-                    lst.Informacion = new List<Datos>();
+                    BoletosBrasil lst = new BoletosBrasil();
+                    lst.LBoletosBrasil = new List<BoletoBrasil>();
 
                     //string[] aux = ds.Tables[0].Rows[param.FechaFila][param.FechaCol].ToString().Split(':');
                     //DateTime fechaTotalLiquidado = DateTime.Parse(aux[0].ToString().Trim());
@@ -77,7 +77,7 @@ namespace DIBB.WinApp
                     {
                         if (ds.Tables[0].Rows[i].ItemArray.GetValue(0).ToString() != string.Empty)
                         {
-                            Datos d = new Datos();
+                            BoletoBrasil d = new BoletoBrasil();
                             trace.TraceInformation("fila: " + i.ToString() + " col NumeroCobroCol:" + param.NumeroCobroCol.ToString());
                             d.NumeroCobro = long.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(param.NumeroCobroCol).ToString().Trim());
                             trace.TraceInformation("fila: " + i.ToString() + " col NumeroFacturaCol:" + param.NumeroFacturaCol.ToString());
@@ -100,7 +100,7 @@ namespace DIBB.WinApp
                             d.NombrePagador = ds.Tables[0].Rows[i].ItemArray.GetValue(param.NombrePagadorCol).ToString();
                             trace.TraceInformation("fila: " + i.ToString() + " col FechaTotalLiquidadoCol:" + param.FechaTotalLiquidadoCol.ToString());
                             d.FechaTotalLiquidado = DateTime.FromOADate(double.Parse(ds.Tables[0].Rows[i].ItemArray.GetValue(param.FechaTotalLiquidadoCol).ToString()));
-                            lst.Informacion.Add(d);
+                            lst.LBoletosBrasil.Add(d);
 
                             using (var context = new GBRAEntities())
                             {
@@ -113,12 +113,13 @@ namespace DIBB.WinApp
                             break;
                     }
 
-                    Business.GPImportar gpi = new Business.GPImportar(companySelected());
 
-                    gpi.ErrorImportar += new EventHandler<Business.GPImportar.ErrorImportarEventArgs>(ErrorImportar);
-                    gpi.ProcesoOkImportar += new EventHandler<Business.GPImportar.ProcesoOkImportarEventArgs>(ProcesoOkImportar);
+                    Business.AdminBandejasGP bandeja = new Business.AdminBandejasGP(param);
 
-                    gpi.ImportarGPPM(lst);
+                    bandeja.IntegraCobrosXL.EventoErrorIntegracion += new EventHandler<Business.ErrorIntegracionEventArgs>(ErroresAlImportar);
+                    bandeja.IntegraCobrosXL.EventoAlertaIntegracion += new EventHandler<Business.AlertaIntegracionEventArgs>(Alertas);
+
+                    bandeja.ProcesaBandejaXL(lst);
                 }
 
             }
@@ -133,13 +134,18 @@ namespace DIBB.WinApp
             }
         }
 
-        private void ProcesoOkImportar(object sender, Business.GPImportar.ProcesoOkImportarEventArgs e)
+        private void IntegraCobros_ErrorIntegracion(object sender, Business.ErrorIntegracionEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Alertas(object sender, Business.AlertaIntegracionEventArgs e)
         {
             lblProcesos.Text += e.Msg + Environment.NewLine;
             //lblProcesos.Refresh();
         }
 
-        private void ErrorImportar(object sender, Business.GPImportar.ErrorImportarEventArgs e)
+        private void ErroresAlImportar(object sender, Business.ErrorIntegracionEventArgs e)
         {
             lblError.Text += e.Error + Environment.NewLine;
             lblError.Text += "---------------------------" + Environment.NewLine;
@@ -168,9 +174,11 @@ namespace DIBB.WinApp
             int count = 1;
             while (!error)
             {
-                if (System.Configuration.ConfigurationManager.ConnectionStrings["GP_" + count.ToString()] != null)
+                Business.Parametros p = new Business.Parametros("GP_" + count.ToString());
+                p.ConnStringTarget = System.Configuration.ConfigurationManager.ConnectionStrings["GP_" + count.ToString()]?.ConnectionString;
+                if (p.ConnStringTarget != null)
                 {
-                    Business.GPImportar oGPI = new Business.GPImportar("GP_" + count.ToString());
+                    Business.AdminBandejasGP oGPI = new Business.AdminBandejasGP(p);
 
                     cmbEmpresas.Items.Add(new ComboBoxItem("GP_" + count.ToString(), oGPI.GetCompany()));
                     count++;

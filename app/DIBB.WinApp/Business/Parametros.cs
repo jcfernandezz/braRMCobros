@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DIBB.WinApp.Business
 {
-    class Parametros
+    public class Parametros : Model.IParametrosCobrosBoletosXL
     {
         string _prefijo = String.Empty;
         int _NumeroCobroCol;
@@ -23,6 +23,11 @@ namespace DIBB.WinApp.Business
         int _FechaCol;
         int _IniciaDatosFila;
         int _FechaTotalLiquidadoAddDays;
+        string _formatoFecha;
+        string _chekbkid;
+        string _connStringTarget;
+        string _connStringTargetEF;
+        string _rutaLog;
 
         public int NumeroCobroCol
         {
@@ -203,6 +208,71 @@ namespace DIBB.WinApp.Business
             set
             {
                 _FechaTotalLiquidadoAddDays = value;
+            }
+        }
+
+        public string FormatoFecha
+        {
+            get
+            {
+                return System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_FormatoFecha"] ;
+            }
+
+            set
+            {
+                _formatoFecha = value;
+            }
+        }
+
+        public string ChekbkidDefault
+        {
+            get
+            {
+                return System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_CHEKBKID"];
+            }
+
+            set
+            {
+                _chekbkid = value;
+            }
+        }
+
+        public string ConnStringTarget
+        {
+            get
+            {
+                return _connStringTarget;
+            }
+
+            set
+            {
+                _connStringTarget = value;
+            }
+        }
+
+        public string ConnectionStringTargetEF
+        {
+            get
+            {
+                return _connStringTargetEF;
+            }
+
+            set
+            {
+                _connStringTargetEF = value;
+            }
+        }
+
+        public string RutaLog
+        {
+            get
+            {
+                return _rutaLog;
+            }
+
+            set
+            {
+                _rutaLog = value;
             }
         }
 

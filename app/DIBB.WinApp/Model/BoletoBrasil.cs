@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DIBB.WinApp.Model
 {
-    public class Datos
+    public class BoletoBrasil
     {
         public long NumeroCobro { get; set; }
         public string NumeroFactura { get; set; }
@@ -20,8 +20,8 @@ namespace DIBB.WinApp.Model
         public DateTime FechaTotalLiquidado { get; set; }
     }
 
-    public class LstDatos
+    public class BoletosBrasil
     {
-        public List<Datos> Informacion { get; set; }
+        public List<BoletoBrasil> LBoletosBrasil { get; set; }
     }
 }
