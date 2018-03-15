@@ -55,34 +55,42 @@ namespace DIBB.WinApp.Business
 
         }
 
-        public void ProcesaBandeja(Model.BoletosBrasil cobros, TargetGP target)
+        public void ProcesaBandeja(Model.BoletosBrasil cobros, TargetGP destinoGP)
         {
-            switch (target)
+            _cobros = cobros;
+            switch (destinoGP)
             {
                 case TargetGP.RMCobro:
-                    _cobros = cobros;
-                    InitializeBackgroundWorker();
-                    backgroundWorker.RunWorkerAsync();
+                    InitializeBackgroundWorker_RMCobrosYAplicaciones();
                     break;
                 case TargetGP.RMNotaCredito:
-                    throw new InvalidOperationException("No se puede integrar a GP porque no está implementado el destino: " + target.ToString());
-                //_cobros = cobros;
-                //InitializeBackgroundWorker();
-                //backgroundWorker.RunWorkerAsync();
-                //break;
+                    InitializeBackgroundWorker_RMNotaCreditoYAplicaciones();
+                    break;
                 default:
-                    throw new InvalidOperationException("No se puede integrar a GP porque no está implementado el destino: "+target.ToString() + " [BandejaXLIntegraCobrosBoletos.ProcesaBandeja]");
+                    throw new InvalidOperationException("No se puede integrar a GP porque no está implementado el destino: "+destinoGP.ToString() + " [BandejaXLIntegraCobrosBoletos.ProcesaBandeja]");
             }
+            backgroundWorker.RunWorkerAsync();
         }
 
 
-        private void InitializeBackgroundWorker()
+        private void InitializeBackgroundWorker_RMCobrosYAplicaciones()
         {
             backgroundWorker = new BackgroundWorker();
             backgroundWorker.WorkerReportsProgress = true;
             backgroundWorker.WorkerSupportsCancellation = true;
 
-            backgroundWorker.DoWork += new DoWorkEventHandler(backgroundWorker_DoWork);
+            backgroundWorker.DoWork += new DoWorkEventHandler(BackgroundWorker_RMCobrosYAplicaciones);
+            backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(backgroundWorker_RunWorkerCompleted);
+            backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(backgroundWorker_ProgressChanged);
+        }
+
+        private void InitializeBackgroundWorker_RMNotaCreditoYAplicaciones()
+        {
+            backgroundWorker = new BackgroundWorker();
+            backgroundWorker.WorkerReportsProgress = true;
+            backgroundWorker.WorkerSupportsCancellation = true;
+
+            backgroundWorker.DoWork += new DoWorkEventHandler(BackgroundWorker_RMNotaCreditoYAplicaciones);
             backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(backgroundWorker_RunWorkerCompleted);
             backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(backgroundWorker_ProgressChanged);
         }
@@ -115,12 +123,20 @@ namespace DIBB.WinApp.Business
             }
         }
 
-        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void BackgroundWorker_RMCobrosYAplicaciones(object sender, DoWorkEventArgs e)
         {
             // Get the BackgroundWorker that raised this event.
             BackgroundWorker worker = sender as BackgroundWorker;
 
-            ProcesarDatos(worker, e);
+            IntegraRMCobrosYAplicaciones(worker, e);
+        }
+
+        private void BackgroundWorker_RMNotaCreditoYAplicaciones(object sender, DoWorkEventArgs e)
+        {
+            // Get the BackgroundWorker that raised this event.
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            IntegraRMNotaCreditoYAplicaciones(worker, e);
         }
 
         private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -157,15 +173,12 @@ namespace DIBB.WinApp.Business
         /// <summary>
         /// Obtiene el id de cliente y el número de factura a aplicar
         /// </summary>
-        /// <param name="beneficiario">Número de RPS</param>
+        /// <param name="numDoc">Número de RPS</param>
         /// <param name="dueDate">Fecha de vencimiento del boleto bancario</param>
         /// <returns></returns>
-        private DataRow getCustnmbrDocnumbr(string beneficiario, DateTime dueDate)
+        private Model.RMFactura getCustnmbrDocnumbr(string numDoc, DateTime dueDate)
         {
             int intDueDate = dueDate.Year * 10000 + dueDate.Month * 100 + dueDate.Day;
-            //_custnmbr = String.Empty;
-            //_docnmbr = String.Empty;
-            //_amount = 0;
 
             //string sql = "select top 1 custnmbr, docnumbr from vwLocBraBoletosBancarios where inv_no = @beneficiario and intDueDate = @intDueDate";
             string sql = "select top 1 custnmbr, docnumbr, Amount from dbo.vwLocBraRmFacturasYBolBancarios where inv_no = @beneficiario and Amount!=0 order by Payment_Date";
@@ -173,7 +186,7 @@ namespace DIBB.WinApp.Business
             using (SqlCommand cmd = new SqlCommand(sql, conn))
             {
                 cmd.CommandType = CommandType.Text;
-                cmd.Parameters.Add("@beneficiario", SqlDbType.VarChar, 50).Value = beneficiario;
+                cmd.Parameters.Add("@beneficiario", SqlDbType.VarChar, 50).Value = numDoc;
                 cmd.Parameters.Add("@intDueDate", SqlDbType.Int).Value = intDueDate;
 
                 cmd.CommandTimeout = 0;
@@ -186,27 +199,27 @@ namespace DIBB.WinApp.Business
 
                     if (dt.Rows.Count > 0)
                     {
-                        return dt.Rows[0];
-
-                        //_custnmbr = dt.Rows[0]["custnmbr"].ToString();
-                        //_docnmbr = dt.Rows[0]["docnumbr"].ToString();
-                        //_amount = Convert.ToDecimal(dt.Rows[0]["Amount"]);
-                    }
+                        return new Model.RMFactura()
+                            { Custnmbr= dt.Rows[0]["custnmbr"].ToString().Trim(),
+                              Docnmbr = dt.Rows[0]["docnumbr"].ToString().Trim(),
+                              Amount = Convert.ToDecimal(dt.Rows[0]["Amount"])
+                            };
+                        }
                     else
-                        return null;
+                        throw new ArgumentNullException("Invoice "+numDoc+" doesn't exist in GP with balance > 0.");
                 }
             }
         }
 
-        private void ProcesarDatos(BackgroundWorker worker, DoWorkEventArgs e)
+        private void IntegraRMCobrosYAplicaciones(BackgroundWorker worker, DoWorkEventArgs e)
         {
             string mensajeOk = "";
             string mensajeError = "";
-            DataRow custData = null;
+            Model.RMFactura docGP = null;
 
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             string nroLote = DateTime.Now.ToString("yyyyMMdd.HHmmss");
-            worker.ReportProgress(0, new string[] { "Batch " + nroLote, "Batch " + nroLote });
+            worker.ReportProgress(0, new string[] { "Collection receipt batch " + nroLote, "Collection receipt batch " + nroLote });
             cantidad = 0;
             foreach (var dato in _cobros.LBoletosBrasil)
             {
@@ -227,10 +240,10 @@ namespace DIBB.WinApp.Business
 
                         taRMCashReceiptInsert CashReceiptItem = new taRMCashReceiptInsert();
                         //el número de la planilla puede venir así: B-10201, B-10201., B-10201 01, B-10201. 01
-                        string numFactura = dato.NumeroFactura.Trim().Length > 7 ? dato.NumeroFactura.Substring(0, 8) : dato.NumeroFactura.Substring(0, 7);
-                        custData = this.getCustnmbrDocnumbr(numFactura.Trim(), dato.FechaVencimientoPago);
+                        //string numFactura = dato.NumeroFactura.Trim().Length > 7 ? Model.Utiles.Izquierda(dato.NumeroFactura, 8) : Model.Utiles.Izquierda(dato.NumeroFactura, 7);
+                        docGP = this.getCustnmbrDocnumbr(dato.NumeroFactura.Trim(), dato.FechaVencimientoPago);
 
-                        CashReceiptItem.CUSTNMBR = custData["custnmbr"].ToString(); //_custnmbr;   
+                        CashReceiptItem.CUSTNMBR = docGP.Custnmbr;   // custData["custnmbr"].ToString(); //_custnmbr;   
                         CashReceiptItem.DOCNUMBR = "RB" + dato.NumeroCobro;
                         CashReceiptItem.DOCDATE = fechaCobro.ToString(parametrosCobrosXL.FormatoFecha); //System.Configuration.ConfigurationManager.AppSettings[_pre + "_FormatoFecha"]);
                         CashReceiptItem.ORTRXAMT = dato.ValorPago;
@@ -239,14 +252,13 @@ namespace DIBB.WinApp.Business
                         CashReceiptItem.CSHRCTYP = 0;
                         CashReceiptItem.CHEKBKID = parametrosCobrosXL.ChekbkidDefault;                         //System.Configuration.ConfigurationManager.AppSettings[_pre + "_CHEKBKID"];
                         CashReceiptItem.CHEKNMBR = dato.NumeroCobro.ToString();
-                        CashReceiptItem.TRXDSCRN = dato.NumeroFactura;
-                        //CashReceiptItem.CURNCYID = "BRL";
+                        CashReceiptItem.TRXDSCRN = dato.NumeroFacturaYCuota;
                         RMApplyType RMApplyTypeEntry = new RMApplyType();
 
                         taRMApply ApplyItem = new taRMApply();
-                        ApplyItem.APTODCNM = custData["docnumbr"].ToString();   // _docnmbr.Trim(); 
+                        ApplyItem.APTODCNM = docGP.Docnmbr;  // custData["docnumbr"].ToString();   // _docnmbr.Trim(); 
                         ApplyItem.APFRDCNM = "RB" + dato.NumeroCobro;
-                        ApplyItem.APPTOAMT = dato.ValorPago - Convert.ToDecimal(custData["Amount"]) > 0 ? Convert.ToDecimal(custData["Amount"]) : dato.ValorPago;
+                        ApplyItem.APPTOAMT = dato.ValorPago - Convert.ToDecimal(docGP.Amount) > 0 ? Convert.ToDecimal(docGP.Amount) : dato.ValorPago;
                         ApplyItem.APFRDCTY = 9;
                         ApplyItem.APTODCTY = 1;
                         ApplyItem.APPLYDATE = fechaCobro.ToString(parametrosCobrosXL.FormatoFecha);     // System.Configuration.ConfigurationManager.AppSettings[_pre + "_FormatoFecha"]);
@@ -268,7 +280,7 @@ namespace DIBB.WinApp.Business
                             XmlDocument xmlDoc = Serializa(eConnDoc);
                             eConnectMethods.CreateEntity(parametrosCobrosXL.ConnStringTarget, xmlDoc.OuterXml);
 
-                            mensajeOk = dato.NumeroFactura + " - " + dato.NumeroCobro + ": OK" + Environment.NewLine;
+                            mensajeOk = dato.NumeroFactura + " - " + dato.NumeroCobro + ": Collection receipt OK" + Environment.NewLine;
                         }
                         else
                         {
@@ -278,10 +290,13 @@ namespace DIBB.WinApp.Business
                         System.Threading.Thread.Sleep(100);
 
                     }
+                    catch (eConnectException ec)
+                    {
+                        mensajeError = dato.NumeroFactura + " - " + dato.NumeroCobro + " eConn: " + ec.Message + Environment.NewLine + ec.StackTrace;
+                    }
                     catch (Exception ex)
                     {
-                        String msj = custData == null ? String.Empty : "Invoice or Bank slip doesn't exist in GP.";
-                        mensajeError = dato.NumeroFactura + " - " + dato.NumeroCobro + ": Error. " + msj + Environment.NewLine + ex.Message + Environment.NewLine;
+                        mensajeError = dato.NumeroFactura + " - " + dato.NumeroCobro + ": " + ex.Message + Environment.NewLine+ ex.StackTrace;
                     }
                     finally
                     {
@@ -291,7 +306,107 @@ namespace DIBB.WinApp.Business
                     }
                 }
             }
-            worker.ReportProgress(0, new string[] { "Process finished.", "Process finished." });
+            worker.ReportProgress(0, new string[] { "Collection receipt uploading finished.", "Collection receipt uploading finished." });
+        }
+
+        private void IntegraRMNotaCreditoYAplicaciones(BackgroundWorker worker, DoWorkEventArgs e)
+        {
+            string mensajeOk = "";
+            string mensajeError = "";
+            Model.RMFactura docGP = null;
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            string nroLote = DateTime.Now.ToString("yyyyMMdd.HHmmss");
+            worker.ReportProgress(0, new string[] { "Credit memo batch " + nroLote, "Credit memo Batch " + nroLote });
+            cantidad = 0;
+            foreach (var dato in _cobros.LBoletosBrasil)
+            {
+                mensajeOk = "";
+                mensajeError = "";
+                DateTime fechaCobro = dato.FechaTotalLiquidado.AddDays(parametrosCobrosXL.FechaTotalLiquidadoAddDays);
+                using (eConnectMethods eConnectMethods = new eConnectMethods())
+                {
+                    eConnectMethods.RequireProxyService = true;
+                    List<RMTransactionType> masterRMTransactionType = new List<RMTransactionType>();
+                    List<RMApplyType> masterRMApplyType = new List<RMApplyType>();
+
+                    try
+                    {
+                        bool error = false;
+
+                        //RMCashReceiptsType RMCashReceiptsTypeEntry = new RMCashReceiptsType();
+                        RMTransactionType RMTransactionTypeEntry = new RMTransactionType();
+
+                        taRMTransaction rmTransactionItem = new taRMTransaction();
+                        //el número de la planilla puede venir así: B-10201, B-10201., B-10201 01, B-10201. 01
+                        //string numFactura = dato.NumeroFactura.Trim().Length > 7 ? Model.Utiles.Izquierda(dato.NumeroFactura, 8) : Model.Utiles.Izquierda( dato.NumeroFactura, 7);
+                        docGP = this.getCustnmbrDocnumbr(dato.NumeroFactura.Trim(), dato.FechaVencimientoPago);
+
+                        rmTransactionItem.CUSTNMBR = docGP.Custnmbr;   // custData["custnmbr"].ToString(); //_custnmbr;   
+                        rmTransactionItem.DOCNUMBR = "CC" + dato.NumeroCobro;
+                        rmTransactionItem.DOCDATE = fechaCobro.ToString(parametrosCobrosXL.FormatoFecha); //System.Configuration.ConfigurationManager.AppSettings[_pre + "_FormatoFecha"]);
+                        rmTransactionItem.RMDTYPAL = 7;
+                        rmTransactionItem.DOCAMNT = dato.Juros;
+                        rmTransactionItem.SLSAMNT = dato.Juros;
+
+                        rmTransactionItem.BACHNUMB = nroLote;
+                        rmTransactionItem.DOCDESCR = dato.NumeroFacturaYCuota;
+                        rmTransactionItem.CSTPONBR = dato.NombrePagador;
+
+                        RMApplyType RMApplyTypeEntry = new RMApplyType();
+
+                        taRMApply ApplyItem = new taRMApply();
+                        ApplyItem.APTODCNM = docGP.Docnmbr;  // custData["docnumbr"].ToString();   // _docnmbr.Trim(); 
+                        ApplyItem.APFRDCNM = "CC" + dato.NumeroCobro;
+                        ApplyItem.APPTOAMT = dato.Juros - Convert.ToDecimal(docGP.Amount) > 0 ? Convert.ToDecimal(docGP.Amount) : dato.Juros;
+                        ApplyItem.APFRDCTY = 7;
+                        ApplyItem.APTODCTY = 1;
+                        ApplyItem.APPLYDATE = fechaCobro.ToString(parametrosCobrosXL.FormatoFecha);     // System.Configuration.ConfigurationManager.AppSettings[_pre + "_FormatoFecha"]);
+                        ApplyItem.GLPOSTDT = fechaCobro.ToString(parametrosCobrosXL.FormatoFecha);      // System.Configuration.ConfigurationManager.AppSettings[_pre + "_FormatoFecha"]);
+
+                        cantidad++;
+
+                        if (!error)
+                        {
+                            eConnectType eConnDoc = new eConnectType();
+                            RMTransactionTypeEntry.taRMTransaction = rmTransactionItem;
+                            masterRMTransactionType.Add(RMTransactionTypeEntry);
+                            eConnDoc.RMTransactionType = masterRMTransactionType.ToArray();
+
+                            RMApplyTypeEntry.taRMApply = ApplyItem;
+                            masterRMApplyType.Add(RMApplyTypeEntry);
+                            eConnDoc.RMApplyType = masterRMApplyType.ToArray();
+
+                            XmlDocument xmlDoc = Serializa(eConnDoc);
+                            eConnectMethods.CreateEntity(parametrosCobrosXL.ConnStringTarget, xmlDoc.OuterXml);
+
+                            mensajeOk = dato.NumeroFactura + " - " + dato.NumeroCobro + ": Credit Memo OK" + Environment.NewLine;
+                        }
+                        else
+                        {
+                            mensajeError = dato.NumeroFactura + " - " + dato.NumeroCobro + ": Error" + Environment.NewLine;
+                        }
+
+                        System.Threading.Thread.Sleep(100);
+
+                    }
+                    catch (eConnectException ec)
+                    {
+                        mensajeError = dato.NumeroFactura + " - " + dato.NumeroCobro + " eConn: " + ec.Message + Environment.NewLine + ec.StackTrace;
+                    }
+                    catch (Exception ex)
+                    {
+                        mensajeError = dato.NumeroFactura + " - " + dato.NumeroCobro + ": " + ex.Message + Environment.NewLine + ex.StackTrace;
+                    }
+                    finally
+                    {
+                        eConnectMethods.Dispose();
+
+                        worker.ReportProgress(0, new string[] { mensajeError, mensajeOk });
+                    }
+                }
+            }
+            worker.ReportProgress(0, new string[] { "Credit memo uploading finished.", "Credit memo uploading finished." });
         }
 
     }

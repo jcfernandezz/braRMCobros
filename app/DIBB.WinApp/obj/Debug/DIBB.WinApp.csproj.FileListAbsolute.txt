@@ -63,7 +63,6 @@ C:\jcTii\Desarrollo\BRA_LocBase\braRMCobros\app\DIBB.WinApp\bin\Debug\Microsoft.
 C:\jcTii\Desarrollo\BRA_LocBase\braRMCobros\app\DIBB.WinApp\bin\Debug\EntityFramework.xml
 C:\jcTii\Desarrollo\BRA_LocBase\braRMCobros\app\DIBB.WinApp\bin\Debug\EntityFramework.SqlServer.xml
 C:\jcTii\Desarrollo\BRA_LocBase\braRMCobros\app\DIBB.WinApp\bin\Debug\Excel.pdb
-C:\jcTii\Desarrollo\BRA_LocBase\braRMCobros\app\DIBB.WinApp\obj\Debug\DIBB.WinApp.csprojResolveAssemblyReference.cache
 C:\jcTii\Desarrollo\BRA_LocBase\braRMCobros\app\DIBB.WinApp\obj\Debug\DIBB.WinApp.Form1.resources
 C:\jcTii\Desarrollo\BRA_LocBase\braRMCobros\app\DIBB.WinApp\obj\Debug\DIBB.WinApp.Properties.Resources.resources
 C:\jcTii\Desarrollo\BRA_LocBase\braRMCobros\app\DIBB.WinApp\obj\Debug\DIBB.WinApp.csproj.GenerateResource.Cache

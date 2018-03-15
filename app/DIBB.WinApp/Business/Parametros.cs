@@ -8,7 +8,8 @@ namespace DIBB.WinApp.Business
 {
     public class Parametros : Model.IParametrosCobrosBoletosXL
     {
-        string _prefijo = String.Empty;
+        string prefijoGeneral = String.Empty;
+        string prefijoTipoArchivo = String.Empty;
         int _NumeroCobroCol;
         int _NumeroFacturaCol;
         int _CodigoLiquidacionCol;
@@ -33,7 +34,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_NumeroCobroCol"]);
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_NumeroCobroCol"]);
             }
 
             set
@@ -46,7 +47,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_NumeroFacturaCol"]); ;
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_NumeroFacturaCol"]); ;
             }
 
             set
@@ -59,7 +60,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_CodigoLiquidacionCol"]);
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_CodigoLiquidacionCol"]);
             }
 
             set
@@ -72,7 +73,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_FechaVencimientoPagoCol"]);
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_FechaVencimientoPagoCol"]);
             }
 
             set
@@ -85,7 +86,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_ValorBoletoCol"]);
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_ValorBoletoCol"]);
             }
 
             set
@@ -98,7 +99,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_JurosCol"]);
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_JurosCol"]);
             }
 
             set
@@ -111,7 +112,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_AbatimentoCol"]);
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_AbatimentoCol"]);
             }
 
             set
@@ -124,7 +125,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_ValorPagoCol"]);
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_ValorPagoCol"]);
             }
 
             set
@@ -137,7 +138,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_NombrePagadorCol"]);
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_NombrePagadorCol"]);
             }
 
             set
@@ -150,7 +151,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_FechaTotalLiquidadoCol"]);
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_FechaTotalLiquidadoCol"]);
             }
 
             set
@@ -163,7 +164,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_FechaFila"]);
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_FechaFila"]);
             }
 
             set
@@ -176,7 +177,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_FechaCol"]);
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_FechaCol"]);
             }
 
             set
@@ -189,7 +190,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_IniciaDatosFila"]);
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_IniciaDatosFila"]);
             }
 
             set
@@ -202,7 +203,7 @@ namespace DIBB.WinApp.Business
         {
             get
             {
-                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_FechaTotalLiquidadoAddDays"]);
+                return int.Parse(System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_FechaTotalLiquidadoAddDays"]);
             }
 
             set
@@ -211,24 +212,11 @@ namespace DIBB.WinApp.Business
             }
         }
 
-        public string FormatoFecha
-        {
-            get
-            {
-                return System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_FormatoFecha"] ;
-            }
-
-            set
-            {
-                _formatoFecha = value;
-            }
-        }
-
         public string ChekbkidDefault
         {
             get
             {
-                return System.Configuration.ConfigurationManager.AppSettings[_prefijo + "_CHEKBKID"];
+                return System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + prefijoTipoArchivo + "_CHEKBKID"];
             }
 
             set
@@ -237,11 +225,24 @@ namespace DIBB.WinApp.Business
             }
         }
 
+        public string FormatoFecha
+        {
+            get
+            {
+                return System.Configuration.ConfigurationManager.AppSettings[prefijoGeneral + "_FormatoFecha"];
+            }
+
+            set
+            {
+                _formatoFecha = value;
+            }
+        }
+
         public string ConnStringTarget
         {
             get
             {
-                return _connStringTarget;
+                return System.Configuration.ConfigurationManager.ConnectionStrings[prefijoGeneral]?.ConnectionString; 
             }
 
             set
@@ -276,9 +277,10 @@ namespace DIBB.WinApp.Business
             }
         }
 
-        public Parametros(String prefijo)
+        public Parametros(String prefijo, String prefTipoArchivo)
         {
-            _prefijo = prefijo;
+            prefijoGeneral = prefijo;
+            prefijoTipoArchivo = prefTipoArchivo;
         }
     }
 }

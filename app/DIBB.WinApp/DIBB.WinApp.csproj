@@ -105,6 +105,7 @@
     <Compile Include="Model\IParametros.cs" />
     <Compile Include="Model\IParametrosCobrosXL.cs" />
     <Compile Include="Model\IParametrosXL.cs" />
+    <Compile Include="Model\RMFactura.cs" />
     <Compile Include="Model\Util.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -150,7 +151,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\transfer.jpg" />

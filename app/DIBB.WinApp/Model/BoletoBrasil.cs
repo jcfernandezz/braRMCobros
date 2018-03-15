@@ -8,9 +8,10 @@ namespace DIBB.WinApp.Model
 {
     public class BoletoBrasil
     {
-        public long NumeroCobro { get; set; }
+        public string NumeroCobro { get; set; }
         public string NumeroFactura { get; set; }
-        public int CodigoLiquidacion { get; set; }
+        public string NumeroFacturaYCuota { get; set; }
+        public string CodigoLiquidacion { get; set; }
         public DateTime FechaVencimientoPago { get; set; }
         public decimal ValorBoleto { get; set; }
         public decimal Juros { get; set; }

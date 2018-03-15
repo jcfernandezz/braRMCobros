@@ -8,27 +8,48 @@ namespace DIBB.WinApp.Model
 {
     public static class Utiles
     {
-        public static string getLast(this string @string, int amount)
+        public static string getLast(this string @string, int largo)
         {
             if (@string == null)
             {
                 return @string;
             }
 
-            if (amount < 0)
+            if (largo < 0)
             {
                 return String.Empty;
             }
 
-            if (amount >= @string.Length)
+            if (largo >= @string.Length)
             {
                 return @string;
             }
             else
             {
-                return @string.Substring(@string.Length - amount);
+                return @string.Substring(@string.Length - largo);
             }
         }
 
+        public static string Izquierda(this string @string, int largo)
+        {
+            if (@string == null)
+            {
+                return @string;
+            }
+
+            if (largo < 0)
+            {
+                return String.Empty;
+            }
+
+            if (largo >= @string.Length)
+            {
+                return @string;
+            }
+            else
+            {
+                return @string.Substring(0, largo);
+            }
+        }
     }
 }

@@ -48,8 +48,8 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.lblProcesos = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
             this.cbTipoArchivo = new System.Windows.Forms.ComboBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource3)).BeginInit();
@@ -88,11 +88,11 @@
             this.tableLayoutPanel3.Controls.Add(this.cmbEmpresas, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.lblUsuario, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.lblFecha, 2, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(560, 0);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(501, 0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(330, 25);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(389, 25);
             this.tableLayoutPanel3.TabIndex = 18;
             // 
             // cmbEmpresas
@@ -101,16 +101,16 @@
             this.cmbEmpresas.FormattingEnabled = true;
             this.cmbEmpresas.Location = new System.Drawing.Point(44, 3);
             this.cmbEmpresas.Name = "cmbEmpresas";
-            this.cmbEmpresas.Size = new System.Drawing.Size(121, 21);
+            this.cmbEmpresas.Size = new System.Drawing.Size(210, 21);
             this.cmbEmpresas.TabIndex = 6;
             // 
             // lblFecha
             // 
             this.lblFecha.AutoSize = true;
             this.lblFecha.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblFecha.Location = new System.Drawing.Point(171, 0);
+            this.lblFecha.Location = new System.Drawing.Point(260, 0);
             this.lblFecha.Name = "lblFecha";
-            this.lblFecha.Size = new System.Drawing.Size(156, 25);
+            this.lblFecha.Size = new System.Drawing.Size(126, 25);
             this.lblFecha.TabIndex = 7;
             this.lblFecha.Text = "label2";
             this.lblFecha.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -131,14 +131,14 @@
             this.archivoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.salirToolStripMenuItem});
             this.archivoToolStripMenuItem.Name = "archivoToolStripMenuItem";
-            this.archivoToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
-            this.archivoToolStripMenuItem.Text = "Archivo";
+            this.archivoToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.archivoToolStripMenuItem.Text = "File";
             // 
             // salirToolStripMenuItem
             // 
             this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
-            this.salirToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
-            this.salirToolStripMenuItem.Text = "Salir";
+            this.salirToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.salirToolStripMenuItem.Text = "Exit";
             this.salirToolStripMenuItem.Click += new System.EventHandler(this.salirToolStripMenuItem_Click);
             // 
             // acercaDeToolStripMenuItem
@@ -146,14 +146,14 @@
             this.acercaDeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.versión10ToolStripMenuItem});
             this.acercaDeToolStripMenuItem.Name = "acercaDeToolStripMenuItem";
-            this.acercaDeToolStripMenuItem.Size = new System.Drawing.Size(80, 20);
-            this.acercaDeToolStripMenuItem.Text = "Acerca de...";
+            this.acercaDeToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.acercaDeToolStripMenuItem.Text = "About...";
             // 
             // versión10ToolStripMenuItem
             // 
             this.versión10ToolStripMenuItem.Name = "versión10ToolStripMenuItem";
-            this.versión10ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.versión10ToolStripMenuItem.Text = "Versión 3.0.0";
+            this.versión10ToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.versión10ToolStripMenuItem.Text = "Version 3.0.0";
             // 
             // lblError
             // 
@@ -220,6 +220,18 @@
             this.panel1.Size = new System.Drawing.Size(919, 89);
             this.panel1.TabIndex = 1;
             // 
+            // cbTipoArchivo
+            // 
+            this.cbTipoArchivo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTipoArchivo.FormattingEnabled = true;
+            this.cbTipoArchivo.Items.AddRange(new object[] {
+            "Bank slips",
+            "Credit cards"});
+            this.cbTipoArchivo.Location = new System.Drawing.Point(9, 33);
+            this.cbTipoArchivo.Name = "cbTipoArchivo";
+            this.cbTipoArchivo.Size = new System.Drawing.Size(144, 21);
+            this.cbTipoArchivo.TabIndex = 2;
+            // 
             // button1
             // 
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -230,18 +242,6 @@
             this.button1.TabIndex = 0;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // cbTipoArchivo
-            // 
-            this.cbTipoArchivo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTipoArchivo.FormattingEnabled = true;
-            this.cbTipoArchivo.Items.AddRange(new object[] {
-            "Boletos",
-            "Tarjeta de crédito"});
-            this.cbTipoArchivo.Location = new System.Drawing.Point(9, 33);
-            this.cbTipoArchivo.Name = "cbTipoArchivo";
-            this.cbTipoArchivo.Size = new System.Drawing.Size(144, 21);
-            this.cbTipoArchivo.TabIndex = 2;
             // 
             // Form1
             // 
