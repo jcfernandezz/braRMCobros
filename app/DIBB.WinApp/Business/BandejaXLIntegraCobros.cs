@@ -211,6 +211,11 @@ namespace DIBB.WinApp.Business
             }
         }
 
+        /// <summary>
+        /// Integra recibos de cobro y aplica a facturas
+        /// </summary>
+        /// <param name="worker"></param>
+        /// <param name="e"></param>
         private void IntegraRMCobrosYAplicaciones(BackgroundWorker worker, DoWorkEventArgs e)
         {
             string mensajeOk = "";
@@ -242,11 +247,13 @@ namespace DIBB.WinApp.Business
                         //el número de la planilla puede venir así: B-10201, B-10201., B-10201 01, B-10201. 01
                         //string numFactura = dato.NumeroFactura.Trim().Length > 7 ? Model.Utiles.Izquierda(dato.NumeroFactura, 8) : Model.Utiles.Izquierda(dato.NumeroFactura, 7);
                         docGP = this.getCustnmbrDocnumbr(dato.NumeroFactura.Trim(), dato.FechaVencimientoPago);
+                        decimal valorBoleto = decimal.Round( dato.ValorBoleto, 2);
+                        decimal valorPago = decimal.Round(dato.ValorPago, 2);
 
                         CashReceiptItem.CUSTNMBR = docGP.Custnmbr;   // custData["custnmbr"].ToString(); //_custnmbr;   
                         CashReceiptItem.DOCNUMBR = "RB" + dato.NumeroCobro;
                         CashReceiptItem.DOCDATE = fechaCobro.ToString(parametrosCobrosXL.FormatoFecha); //System.Configuration.ConfigurationManager.AppSettings[_pre + "_FormatoFecha"]);
-                        CashReceiptItem.ORTRXAMT = dato.ValorPago;
+                        CashReceiptItem.ORTRXAMT = valorPago;
                         CashReceiptItem.GLPOSTDT = CashReceiptItem.DOCDATE;
                         CashReceiptItem.BACHNUMB = nroLote;
                         CashReceiptItem.CSHRCTYP = 0;
@@ -258,7 +265,7 @@ namespace DIBB.WinApp.Business
                         taRMApply ApplyItem = new taRMApply();
                         ApplyItem.APTODCNM = docGP.Docnmbr;  // custData["docnumbr"].ToString();   // _docnmbr.Trim(); 
                         ApplyItem.APFRDCNM = "RB" + dato.NumeroCobro;
-                        ApplyItem.APPTOAMT = dato.ValorPago - Convert.ToDecimal(docGP.Amount) > 0 ? Convert.ToDecimal(docGP.Amount) : dato.ValorPago;
+                        ApplyItem.APPTOAMT = valorPago - Convert.ToDecimal(docGP.Amount) > 0 ? Convert.ToDecimal(docGP.Amount) : valorPago;
                         ApplyItem.APFRDCTY = 9;
                         ApplyItem.APTODCTY = 1;
                         ApplyItem.APPLYDATE = fechaCobro.ToString(parametrosCobrosXL.FormatoFecha);     // System.Configuration.ConfigurationManager.AppSettings[_pre + "_FormatoFecha"]);
@@ -309,6 +316,11 @@ namespace DIBB.WinApp.Business
             worker.ReportProgress(0, new string[] { "Collection receipt uploading finished.", "Collection receipt uploading finished." });
         }
 
+        /// <summary>
+        /// Integra nc de AR y aplica facturas
+        /// </summary>
+        /// <param name="worker"></param>
+        /// <param name="e"></param>
         private void IntegraRMNotaCreditoYAplicaciones(BackgroundWorker worker, DoWorkEventArgs e)
         {
             string mensajeOk = "";
@@ -333,6 +345,9 @@ namespace DIBB.WinApp.Business
                     try
                     {
                         bool error = false;
+                        decimal valorBoleto = decimal.Round(dato.ValorBoleto, 2);
+                        decimal valorPago = decimal.Round(dato.ValorPago, 2);
+                        decimal juros = decimal.Round(dato.Juros, 2);
 
                         //RMCashReceiptsType RMCashReceiptsTypeEntry = new RMCashReceiptsType();
                         RMTransactionType RMTransactionTypeEntry = new RMTransactionType();
@@ -346,8 +361,8 @@ namespace DIBB.WinApp.Business
                         rmTransactionItem.DOCNUMBR = "CC" + dato.NumeroCobro;
                         rmTransactionItem.DOCDATE = fechaCobro.ToString(parametrosCobrosXL.FormatoFecha); //System.Configuration.ConfigurationManager.AppSettings[_pre + "_FormatoFecha"]);
                         rmTransactionItem.RMDTYPAL = 7;
-                        rmTransactionItem.DOCAMNT = dato.Juros;
-                        rmTransactionItem.SLSAMNT = dato.Juros;
+                        rmTransactionItem.DOCAMNT = juros;
+                        rmTransactionItem.SLSAMNT = juros;
 
                         rmTransactionItem.BACHNUMB = nroLote;
                         rmTransactionItem.DOCDESCR = dato.NumeroFacturaYCuota;
@@ -358,7 +373,7 @@ namespace DIBB.WinApp.Business
                         taRMApply ApplyItem = new taRMApply();
                         ApplyItem.APTODCNM = docGP.Docnmbr;  // custData["docnumbr"].ToString();   // _docnmbr.Trim(); 
                         ApplyItem.APFRDCNM = "CC" + dato.NumeroCobro;
-                        ApplyItem.APPTOAMT = dato.Juros - Convert.ToDecimal(docGP.Amount) > 0 ? Convert.ToDecimal(docGP.Amount) : dato.Juros;
+                        ApplyItem.APPTOAMT = juros - Convert.ToDecimal(docGP.Amount) > 0 ? Convert.ToDecimal(docGP.Amount) : juros;
                         ApplyItem.APFRDCTY = 7;
                         ApplyItem.APTODCTY = 1;
                         ApplyItem.APPLYDATE = fechaCobro.ToString(parametrosCobrosXL.FormatoFecha);     // System.Configuration.ConfigurationManager.AppSettings[_pre + "_FormatoFecha"]);
